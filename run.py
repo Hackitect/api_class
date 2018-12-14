@@ -35,16 +35,15 @@ def api_all():
 
 
 
-@app.route("/users/name", methods=['GET'])
+@app.route("/users/user", methods=['GET'])
 def get_user(name):
 
 	results = []
 	for user in users:
-		if user['name'] == user:
-			results.append(user)
-			return jsonify(user), 200
-		else:
-			return 'User not found in system', 404
+		if name == user['name']:
+			return 'User has been found in the database'
+		
+	
 
 @app.route("/users/name", methods=['POST'])
 def add_user(self, name):
