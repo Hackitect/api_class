@@ -73,19 +73,31 @@ def update_user():
 		for user in users:
 			if user['id'] == request.json['id']:
 				
-				# id = request.json['id']
-				# name = request.json['name']
-				# age = request.json['age']
-				# occupation = request.json['occupation'
-				# user = {'id': id, 'name': name, 'age': age, 'occupation': occupation}
+				id = request.json['id']
+				name = request.json['name']
+				age = request.json['age']
+				occupation = request.json['occupation']
+				user = {'id': id, 'name': name, 'age': age, 'occupation': occupation}
 
-				return jsonify(user)
+				return jsonify(user), 200
 			
-			# else:
-			# 	return jsonify ("User not found")
+			else:
+				return jsonify ("User not found"), 404
 						
 
-	
+@app.route("/api/v1/users", methods=['DELETE'])
+def delete_user():	
+
+	#Check that the request string JSON format, and ID is required
+	if not request.json or not 'id' in request.json:
+		abort(404)
+	else:
+		
+		for user in users:
+			if user['id'] == request.json['id']:
+				users.remove(user)
+
+			return jsonify(users)
 		
 				
 
