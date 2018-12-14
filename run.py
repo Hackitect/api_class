@@ -50,11 +50,12 @@ def add_user():
 	if not request.json or not 'name' in request.json:
 		abort(404)
 	else:
-		
+		#auto increment the ID by getting the no. of elements in our list and adding 1
+		id = len(users) + 1
 		name = request.json['name']
 		age = request.json['age']
 		occupation = request.json['occupation']
-		user2 = {'id': 4, 'name': name, 'age': age, 'occupation': occupation}
+		user2 = {'id': id, 'name': name, 'age': age, 'occupation': occupation}
 	
 	users.append(user2)
 	# age = age
