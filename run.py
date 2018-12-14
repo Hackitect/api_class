@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, g
+import sqlite3
 
 app = Flask(__name__)
+
+# conn = sqlite3.connect('stackoverflow.db')
 
 
 # Create some test data
@@ -45,6 +48,19 @@ def user_id(user_id):
 		if user['id'] == user_id:
 			return jsonify(user)
 
+def verify_input_details(name, age, occupation):
+	
+	if not isinstance(name,str):
+		return False
+	elif age > 100: 
+		return False
+	elif len(name) < 3:
+		return False
+	else:
+		return True
+
+
+
 @app.route("/api/v1/users", methods=['POST'])
 def add_user():
 	if not request.json or not 'name' in request.json:
@@ -55,12 +71,19 @@ def add_user():
 		name = request.json['name']
 		age = request.json['age']
 		occupation = request.json['occupation']
-		user2 = {'id': id, 'name': name, 'age': age, 'occupation': occupation}
+
+		if verify_input_details(name, age, occupation) == True:
+			new_user = {'id': id, 'name': name, 'age': age, 'occupation': occupation}
+			users.append(new_user)
+			return jsonify(users)
+		else:
+			abort(404)
+			# return jsonify ("Check your input parameters")
 	
-	users.append(user2)
+	
 	# age = age
 	# occupation = occupation
-	return jsonify(users)
+	#return jsonify(users)
 
 
 @app.route("/api/v1/users", methods=['PUT'])
